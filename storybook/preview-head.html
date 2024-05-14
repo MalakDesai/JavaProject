@@ -1,0 +1,29 @@
+<script crossorigin="anonymous" referrerpolicy="no-referrer">
+  async function correctQuirks() {
+    // This should technically reload the iframe but it doesn't
+    // so looks like the code only runs when storybook is brought up first time
+    // Wait for the DOM to finish loading.
+    // https://developer.mozilla.org/en-US/docs/Web/API/Document/DOMContentLoaded_event
+    await window.addEventListener("DOMContentLoaded", function () {
+
+      // Prevent search button from submitting.
+      document.querySelectorAll('[class*=usa-search]').forEach(x => x.setAttribute("onsubmit", "return false;"));
+
+      // Reload modals into the storybook wrapper element.
+      document.querySelectorAll('[class*=usa-modal-wrapper]').forEach(modal => {
+        // Define the target modal div in storybook.
+        const id = modal.id + '-wrapper';
+        const target = document.getElementById(id);
+        // Remove and append them to the storybook component.
+        modal.classList.add('is-hidden');
+        modal.remove();
+        if (target !== undefined) {
+          target.appendChild(modal);
+        }
+      });
+    });
+  }
+
+  correctQuirks();
+
+</script>
